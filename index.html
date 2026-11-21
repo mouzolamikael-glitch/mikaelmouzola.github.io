@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio data de Mike</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: colonne éditoriale unique, hero à gauche + graphique, projets filtrables en grille, parcours en liste datée */
+:root{
+  --bg:#f2f5f3; --surface:#ffffff; --fg:#13201b; --muted:#5a6b64; --line:#d6dfda;
+  --accent:#1f4fd8; --accent-fg:#ffffff; --accent-soft:#e3eafb; --warn:#8a5a00; --warn-soft:#fbf0d6;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0d1512; --surface:#141f1b; --fg:#e8f0ec; --muted:#9bb0a7; --line:#26362f;
+  --accent:#7ea2ff; --accent-fg:#0d1512; --accent-soft:#1a2745; --warn:#f0c46a; --warn-soft:#2d2411; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1512; --surface:#141f1b; --fg:#e8f0ec; --muted:#9bb0a7; --line:#26362f;
+  --accent:#7ea2ff; --accent-fg:#0d1512; --accent-soft:#1a2745; --warn:#f0c46a; --warn-soft:#2d2411; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--f-body);padding-block:0 3rem;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:62rem;margin:0 auto;min-width:0}
+h1,h2,h3{font-family:var(--f-display);line-height:1.1;text-wrap:balance;margin:0}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.label{font:500 .75rem var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+nav{display:flex;gap:1.25rem;flex-wrap:wrap;align-items:center;padding-block:1rem;border-bottom:1px solid var(--line)}
+nav b{font-family:var(--f-display);font-size:1.1rem;margin-right:auto}
+nav a{color:var(--muted);text-decoration:none;font-size:.9rem}
+nav a:hover{color:var(--fg)}
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:center;padding-block:3.5rem 3rem}
+.hero h1{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:700;letter-spacing:-.02em;margin-block:.75rem 1rem}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{max-width:34rem;color:var(--muted);margin:0 0 1.5rem}
+.cta{display:flex;gap:.75rem;flex-wrap:wrap}
+.btn{display:inline-block;padding:.7rem 1.1rem;border-radius:6px;font-weight:600;font-size:.95rem;text-decoration:none;border:1px solid var(--accent);background:var(--accent);color:var(--accent-fg)}
+.btn.ghost{background:transparent;color:var(--accent)}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1rem;min-width:0}
+.chart svg{width:100%;height:auto;display:block}
+.chart .label{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.5rem}
+section{padding-block:2.5rem;border-top:1px solid var(--line)}
+section>h2{font-size:clamp(1.5rem,4vw,2.1rem);margin-block:.4rem 1.5rem}
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.filters button{font:500 .85rem var(--f-body);padding:.45rem .9rem;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-fg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));gap:1rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:1.25rem;display:flex;flex-direction:column;gap:.7rem;min-width:0}
+.card h3{font-size:1.15rem}
+.card p{margin:0;color:var(--muted);font-size:.93rem}
+.tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-top:auto}
+.tag{font:500 .72rem var(--f-mono);padding:.2rem .55rem;border-radius:4px;background:var(--accent-soft);color:var(--accent)}
+.tag.todo{background:var(--warn-soft);color:var(--warn)}
+.card.feature{grid-column:1/-1}
+.proj{display:grid;grid-template-columns:1.2fr .8fr;gap:1.5rem;align-items:start}
+.proj img{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--line)}
+.proj-text{display:grid;gap:1rem;min-width:0}
+.kpis{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(7.5rem,1fr));gap:.75rem}
+.kpis li{border-left:3px solid var(--accent);padding-left:.7rem;min-width:0}
+.kpis b{font-family:var(--f-display);font-size:1.25rem;display:block;font-variant-numeric:tabular-nums}
+.kpis span{color:var(--muted);font-size:.82rem}
+.shots{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:1rem}
+.shots figure{margin:0;display:grid;gap:.5rem;align-content:start;min-width:0}
+.shots img{width:100%;height:auto;display:block;border-radius:8px;border:1px solid var(--line)}
+.shots figcaption{color:var(--muted);font-size:.85rem}
+.shots figcaption b{display:block;color:var(--fg);font-family:var(--f-display);font-size:1rem}
+@media (max-width:760px){.proj{grid-template-columns:1fr}}
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:1rem}
+.skill{border-left:3px solid var(--accent);padding-left:1rem}
+.skill b{font-family:var(--f-display);font-size:1.1rem;display:block}
+.skill span{color:var(--muted);font-size:.9rem}
+.timeline{list-style:none;margin:0;padding:0;display:grid;gap:1rem}
+.timeline li{display:grid;grid-template-columns:7rem 1fr;gap:1rem}
+.timeline .label{padding-top:.2rem}
+.timeline b{display:block}
+.timeline span{color:var(--muted);font-size:.92rem}
+.contact{display:grid;gap:.6rem}
+.contact code{font:500 .9rem var(--f-mono);background:var(--surface);border:1px solid var(--line);padding:.35rem .6rem;border-radius:6px;overflow-wrap:anywhere}
+footer{padding-top:2rem;color:var(--muted);font-size:.85rem}
+@media (max-width:700px){.hero{grid-template-columns:1fr;padding-block:2rem}.timeline li{grid-template-columns:1fr;gap:.2rem}}
+body{margin:0}
+[hidden]{display:none!important}
+img{max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav>
+    <b>MOUZOLA Mikael Archange</b>
+    <a href="#projets">Projets</a><a href="#competences">Compétences</a><a href="#parcours">Parcours</a><a href="#contact">Contact</a>
+  </nav>
+
+  <header class="hero">
+    <div>
+      <span class="label">Portfolio data · Douala, Cameroun</span>
+      <h1>Je transforme les données <em>en décisions stratégiques</em>.</h1>
+      <p>Responsable Marketing et étudiant à l’ESSEC Business School de Douala, spécialisé en Marketing, Vente & Négociation ainsi qu’en Systèmes d’Information & Big Data. Je combine expertise marketing, analyse de données et compétences technologiques pour transformer les données en informations stratégiques et faciliter la prise de décision. 
+
+Maîtrisant Excel, Power BI, SQL et Python, je conçois des analyses de données et des tableaux de bord décisionnels adaptés aux enjeux des entreprises, notamment dans les secteurs bancaire, des télécommunications et pétrolier en Afrique centrale.</p>
+      <div class="cta">
+        <a class="btn" href="#projets">Voir mes projets</a>
+        <a class="btn ghost" href="#contact">Me contacter</a>
+      </div>
+    </div>
+    <div class="chart" aria-hidden="true">
+      <div class="label"><span>Exemple de graphique</span><span>illustration</span></div>
+      <svg viewBox="0 0 320 200" role="img">
+        <g stroke="var(--line)" stroke-width="1"><line x1="10" y1="40" x2="310" y2="40"/><line x1="10" y1="90" x2="310" y2="90"/><line x1="10" y1="140" x2="310" y2="140"/><line x1="10" y1="185" x2="310" y2="185"/></g>
+        <g fill="var(--accent-soft)"><rect x="24" y="120" width="30" height="65"/><rect x="74" y="100" width="30" height="85"/><rect x="124" y="108" width="30" height="77"/><rect x="174" y="70" width="30" height="115"/><rect x="224" y="82" width="30" height="103"/><rect x="274" y="44" width="30" height="141"/></g>
+        <polyline fill="none" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round" points="39,112 89,92 139,100 189,62 239,74 289,34"/>
+        <circle cx="289" cy="34" r="6" fill="var(--accent)"/>
+      </svg>
+    </div>
+  </header>
+
+  <section id="projets">
+    <span class="label">Projets data</span>
+    <h2>Ce que j'ai analysé et construit</h2>
+    <div class="filters" role="group" aria-label="Filtrer les projets">
+      <button type="button" data-f="all" aria-pressed="true">Tous</button>
+      <button type="button" data-f="dashboard" aria-pressed="false">Tableaux de bord</button>
+      <button type="button" data-f="analyse" aria-pressed="false">Analyses</button>
+      <button type="button" data-f="recherche" aria-pressed="false">Recherche</button>
+    </div>
+    <div class="grid" id="grid">
+      <article class="card feature" data-c="dashboard">
+        <span class="label">Power BI · Tableau de bord</span>
+        <h3>Analyse des performances commerciales 2026</h3>
+        <div class="proj">
+          <a href="assets/dashboard-performances-2026.jpg" target="_blank" rel="noopener"><img src="assets/dashboard-performances-2026.jpg" alt="Tableau de bord Power BI : chiffre d'affaires, commandes, panier moyen, revenus par catégorie, ville et tranche d'âge, satisfaction client" loading="lazy"></a>
+          <div class="proj-text">
+            <p>Un tableau de bord pour suivre le chiffre d'affaires par catégorie de produits, par ville, par tranche d'âge et par genre. Un filtre par mois, l'évolution trimestrielle du chiffre d'affaires et des commandes, et la satisfaction client selon le délai de livraison complètent la vue.</p>
+            <ul class="kpis">
+              <li><b>5 M€</b><span>chiffre d'affaires</span></li>
+              <li><b>5 000</b><span>commandes</span></li>
+              <li><b>1 008 €</b><span>panier moyen</span></li>
+              <li><b>2 010</b><span>nouveaux clients</span></li>
+              <li><b>86,74 %</b><span>clients satisfaits</span></li>
+              <li><b>6,5 jours</b><span>livraison moyenne</span></li>
+            </ul>
+            <p>L'électronique représente la plus grosse part des revenus (2,4 M€) et Istanbul la première ville (1 364 K€).</p>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">Ventes</span><span class="tag">Satisfaction client</span></div>
+      </article>
+      <article class="card feature" data-c="dashboard">
+        <span class="label">Power BI · 4 pages de tableau de bord</span>
+        <h3>Tableau de bord du supermarché Domino</h3>
+        <p>Un tableau de bord Power BI en quatre pages pour piloter un supermarché : vue globale des ventes et des promotions, performance par catégorie et par emplacement en rayon, suivi du rayon vins par ville et par année, et indicateurs RH du personnel. Chaque page se filtre par date, ville ou nom.</p>
+        <div class="shots">
+          <figure><a href="assets/domino-global.jpg" target="_blank" rel="noopener"><img src="assets/domino-global.jpg" alt="Page Tableau de bord global : volumes vendus par ville, par genre, par positionnement en magasin et promotions" loading="lazy"></a>
+            <figcaption><b>Vue globale</b>48 M de prix hors promo, 22 M de volume, 20 K clients, volumes par ville et par promotion.</figcaption></figure>
+          <figure><a href="assets/domino-categories.jpg" target="_blank" rel="noopener"><img src="assets/domino-categories.jpg" alt="Page ventes par catégorie : prix de vente par catégorie, produits, position en rayon, répartition par section" loading="lazy"></a>
+            <figcaption><b>Catégories et rayons</b>15 M de chiffre d'affaires, ventes par catégorie et par position en rayon, avec ou sans promotion.</figcaption></figure>
+          <figure><a href="assets/domino-vins.jpg" target="_blank" rel="noopener"><img src="assets/domino-vins.jpg" alt="Page vins : chiffre d'affaires par ville et par mois, top 5 des vins, objectif de vente" loading="lazy"></a>
+            <figcaption><b>Rayon vins</b>9,72 M de chiffre d'affaires, 2 995 commandes, top 5 des vins par ville et objectif de vente de 20 M.</figcaption></figure>
+          <figure><a href="assets/domino-personnel.jpg" target="_blank" rel="noopener"><img src="assets/domino-personnel.jpg" alt="Page personnel : effectif, masse salariale, taux de démission, absences par département" loading="lazy"></a>
+            <figcaption><b>Ressources humaines</b>157 employés, 8,28 % de démission, 73,77 % de satisfaction, absences et objectifs par département.</figcaption></figure>
+        </div>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag">Commerce de détail</span><span class="tag">RH</span><span class="tag">Douala</span></div>
+      </article>
+      <article class="card feature" data-c="recherche">
+        <span class="label">Mémoire de master · ESSEC Douala</span>
+        <h3>Indice de Maturité Data des PME d'Afrique centrale</h3>
+        <p>Étude sur le niveau de maturité data des petites et moyennes entreprises de la zone CEMAC : comment elles collectent, exploitent et pilotent leurs données, et ce qui les freine.</p>
+        <div class="tags"><span class="tag">Recherche</span><span class="tag">PME</span><span class="tag">CEMAC</span></div>
+      </article>
+      <article class="card" data-c="dashboard">
+        <span class="label">Power BI</span>
+        <h3>Suivi de la performance marketing</h3>
+        <p>Encours de maintenance</p>
+        <div class="tags"><span class="tag">Power BI</span><span class="tag todo">À compléter</span></div>
+      </article>
+      <article class="card" data-c="analyse">
+        <span class="label">Excel · SQL · Python</span>
+        <h3>Analyse de données clients</h3>
+        <p>Encours de maintenance</p>
+        <div class="tags"><span class="tag">SQL</span><span class="tag">Python</span><span class="tag todo">À compléter</span></div>
+      </article>
+    </div>
+  </section>
+
+  <section id="competences">
+    <span class="label">Compétences</span>
+    <h2>Un profil commercial, avec la data en plus</h2>
+    <div class="skills">
+      <div class="skill"><b>Excel</b><span>Tableaux croisés, formules, modèles de suivi</span></div>
+      <div class="skill"><b>Power BI</b><span>Modélisation et tableaux de bord</span></div>
+      <div class="skill"><b>SQL</b><span>Extraction et préparation des données</span></div>
+      <div class="skill"><b>Python</b><span>Analyse et automatisation</span></div>
+      <div class="skill"><b>Vente & marketing</b><span>Négociation commerciale, communication, stratégie digitale</span></div>
+      <div class="skill"><b>Formation</b><span>J'enseigne l'analyse de données sur ces quatre outils</span></div>
+    </div>
+  </section>
+
+  <section id="parcours">
+    <span class="label">Parcours</span>
+    <h2>Formation et expérience</h2>
+    <ul class="timeline">
+      <li><span class="label">·En cours</span><div><b>Responsable Marketing · Go to Digital (G2D)</b><span>Douala, Cameroun</span></div></li>
+      <li><span class="label">·En cours</span><div><b>Master en Management des systèmes d'information et Big Data</b><span>ESSEC Business School de Douala</span></div></li>
+      <li><span class="label">·En cours</span><div><b>Master en Gestion de la vente et négociation commerciale</b><span>ESSEC Business School de Douala</span></div></li>
+      <li><span class="label">·2025</span><div><b>Licence en Communication, Négociation et Vente</b><span>IUT de Douala</span></div></li>
+      <li><span class="label">·2024</span><div><b>DUT en Gestion appliquée aux PME</b><span>IUT de Douala</span></div></li>
+      <li><span class="label">Expériences</span><div><b>MEN Group, Agence PluSty, CFAIR Consulting</b><span>Analyse marketing et commerciale, plus de 20 mois cumulés</span></div></li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <span class="label">Contact</span>
+    <h2>Travaillons ensemble</h2>
+    <div class="contact">
+      <span>Ouvert aux opportunités dans la banque, les télécoms et l'Oil & Gas, entre Douala, Brazzaville et Pointe-Noire.</span>
+      <code>mouzolamikael@gmail.com | +237 654 06 85 74/+242 06 438 65 53</code>
+      <code>linkedin.com/in/ton-profil</code>
+      <!-- <span class="tag todo" style="align-self:start">Remplace ces deux lignes par tes vrais contacts</span> -->
+    </div>
+  </section>
+
+  <footer>© 2026 Mike · Douala, Cameroun</footer>
+</div>
+
+<script>
+(function(){
+  var btns=document.querySelectorAll('.filters button'),cards=document.querySelectorAll('#grid .card');
+  btns.forEach(function(b){b.addEventListener('click',function(){
+    btns.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+    var f=b.getAttribute('data-f');
+    cards.forEach(function(c){c.hidden=!(f==='all'||c.getAttribute('data-c')===f)});
+  })});
+})();
+</script>
+</body>
+</html>
